@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.gradle.api.tasks.testing.logging.TestLogEvent.*
 
 plugins {
     id("org.springframework.boot") version "2.7.0"
@@ -32,7 +33,9 @@ dependencies {
     implementation("org.codehaus.groovy:groovy-all:3.0.11")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("io.projectreactor:reactor-test")
-    testImplementation("org.spockframework:spock-core:2.1-groovy-3.0")
+    testImplementation(platform("org.spockframework:spock-bom:2.1-groovy-3.0"))
+    testImplementation("org.spockframework:spock-core")
+    testImplementation("org.spockframework:spock-spring")
 }
 
 tasks.withType<KotlinCompile> {
@@ -44,4 +47,7 @@ tasks.withType<KotlinCompile> {
 
 tasks.getByName<Test>("test") {
     useJUnitPlatform()
+    testLogging {
+        events(PASSED, SKIPPED, FAILED)
+    }
 }
