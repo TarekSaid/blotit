@@ -9,7 +9,7 @@ class RateRequestSpec extends Specification {
         with(req.total) {
             type == Type.TOTAL
 
-            with(modalities) {
+            with(location) {
                 G == 3
                 primaryP == 23
                 secondaryP == 4
@@ -30,7 +30,7 @@ class RateRequestSpec extends Specification {
                 C == 1
             }
 
-            with(contents) {
+            with(content) {
                 A == 14
                 pA == 2
                 H == 6
@@ -45,9 +45,9 @@ class RateRequestSpec extends Specification {
                 vst == 1
             }
 
-            V == 4
+            popularity == 4
 
-            with(answers) {
+            with(summary) {
                 Elab == 13.0
                 zSquared == 6.0
                 tri == 65
@@ -58,20 +58,20 @@ class RateRequestSpec extends Specification {
 
         where:
         req << new RateRequest(
-            new AnswerSheet(Type.MONO,
-                new Modalities(3, 7, 2, 0, 0, 0, 0, 0),
+            new DataSheet(Type.MONO,
+                new Location(3, 7, 2, 0, 0, 0, 0, 0),
                 new Determinants(7, 1, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0),
-                new Contents(4, 2, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0),
+                new Content(4, 2, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0),
                 3,
-                new Answers(10.0, 0.0, 32, 258, 12)
+                new Summary(10.0, 0.0, 32, 258, 12)
             ),
 
-            new AnswerSheet(Type.COLOR,
-                new Modalities(0, 16, 2, 2, 0, 0, 0, 0),
+            new DataSheet(Type.COLOR,
+                new Location(0, 16, 2, 2, 0, 0, 0, 0),
                 new Determinants(9, 3, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 2, 1, 2, 1),
-                new Contents(10, 0, 2, 2, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1),
+                new Content(10, 0, 2, 2, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1),
                 1,
-                new Answers(3.0, 6.0, 33, 474, 20)
+                new Summary(3.0, 6.0, 33, 474, 20)
             ))
     }
 }

@@ -4,30 +4,30 @@ import kotlin.reflect.full.createType
 import kotlin.reflect.full.declaredMemberProperties
 import kotlin.reflect.full.primaryConstructor
 
-data class RateRequest(val mono: AnswerSheet, val color: AnswerSheet) {
-    val total: AnswerSheet = mono + color
+data class RateRequest(val mono: DataSheet, val color: DataSheet) {
+    val total: DataSheet = mono + color
 }
 
 enum class Type {
     MONO, COLOR, TOTAL
 }
 
-data class AnswerSheet(
+data class DataSheet(
     val type: Type,
-    val modalities: Modalities,
+    val location: Location,
     val determinants: Determinants,
-    val contents: Contents,
-    val V: Int,
-    val answers: Answers
+    val content: Content,
+    val popularity: Int,
+    val summary: Summary
 ) {
-    operator fun plus(other: AnswerSheet): AnswerSheet {
+    operator fun plus(other: DataSheet): DataSheet {
         return copy(
             type = Type.TOTAL,
-            modalities = this.modalities + other.modalities,
+            location = this.location + other.location,
             determinants = this.determinants + other.determinants,
-            contents = this.contents + other.contents,
-            V = this.V + other.V,
-            answers = this.answers + other.answers
+            content = this.content + other.content,
+            popularity = this.popularity + other.popularity,
+            summary = this.summary + other.summary
         )
     }
 }
@@ -50,7 +50,7 @@ inline operator fun <reified T : Summable> Summable.plus(other: T): T {
     return constructor.call(*sums.toTypedArray())
 }
 
-data class Modalities(
+data class Location(
     val G: Int = 0,
     val primaryP: Int = 0,
     val secondaryP: Int = 0,
@@ -60,9 +60,9 @@ data class Modalities(
     val PG: Int = 0,
     val GP: Int = 0
 ) {
-    operator fun plus(other: Modalities): Modalities {
-        val constructor = Modalities::class.primaryConstructor ?: throw NullPointerException()
-        val members = Modalities::class.declaredMemberProperties
+    operator fun plus(other: Location): Location {
+        val constructor = Location::class.primaryConstructor ?: throw NullPointerException()
+        val members = Location::class.declaredMemberProperties
 
         val sums = constructor.parameters.map { param ->
             val prop = members.first { member -> member.name == param.name }
@@ -92,7 +92,7 @@ data class Determinants(
     val C: Int = 0
 ) : Summable
 
-data class Contents(
+data class Content(
     val A: Int = 0,
     val pA: Int = 0,
     val H: Int = 0,
@@ -119,7 +119,7 @@ data class Contents(
     val vst: Int = 0
 ) : Summable
 
-data class Answers(
+data class Summary(
     val Elab: Double = 0.0,
     val zSquared: Double = 0.0,
     val tri: Int = 0,
