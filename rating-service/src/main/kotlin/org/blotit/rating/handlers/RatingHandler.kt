@@ -1,12 +1,10 @@
 package org.blotit.rating.handlers
 
+import org.blotit.rating.domain.RateRequest
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.stereotype.Component
-import org.springframework.web.reactive.function.server.ServerRequest
-import org.springframework.web.reactive.function.server.ServerResponse
-import org.springframework.web.reactive.function.server.buildAndAwait
-import org.springframework.web.reactive.function.server.coRouter
+import org.springframework.web.reactive.function.server.*
 
 @Configuration
 class RouterConfiguration {
@@ -19,5 +17,9 @@ class RouterConfiguration {
 
 @Component
 class RatingHandler {
-    suspend fun rate(request: ServerRequest): ServerResponse = ServerResponse.ok().buildAndAwait()
+    suspend fun rate(request: ServerRequest): ServerResponse {
+        return request.awaitBodyOrNull(RateRequest::class)?.let {
+            ServerResponse.ok().buildAndAwait()
+        } ?: ServerResponse.badRequest().buildAndAwait()
+    }
 }
