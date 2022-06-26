@@ -1,11 +1,12 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.gradle.api.tasks.testing.logging.TestLogEvent.*
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     id("org.springframework.boot") version "2.7.0"
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
     kotlin("jvm") version "1.6.21"
     kotlin("plugin.spring") version "1.6.21"
+    id("io.kotest") version "0.3.9"
     groovy
 }
 
@@ -30,9 +31,16 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
-    implementation("org.codehaus.groovy:groovy-all:3.0.11")
+
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("io.projectreactor:reactor-test")
+
+    testImplementation("io.kotest:kotest-runner-junit5-jvm:5.3.1")
+    testImplementation("io.kotest:kotest-framework-datatest-jvm:5.3.1")
+    testImplementation("io.kotest.extensions:kotest-extensions-spring:1.1.1")
+    testImplementation("io.mockk:mockk:1.12.4")
+
+    testImplementation("org.codehaus.groovy:groovy-all:3.0.11")
     testImplementation(platform("org.spockframework:spock-bom:2.1-groovy-3.0"))
     testImplementation("org.spockframework:spock-core")
     testImplementation("org.spockframework:spock-spring")

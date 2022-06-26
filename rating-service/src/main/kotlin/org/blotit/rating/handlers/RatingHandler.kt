@@ -1,6 +1,6 @@
 package org.blotit.rating.handlers
 
-import org.blotit.rating.domain.RateRequest
+import org.blotit.rating.domain.DataSheet
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.stereotype.Component
@@ -18,7 +18,7 @@ class RouterConfiguration {
 @Component
 class RatingHandler {
     suspend fun rate(request: ServerRequest): ServerResponse {
-        return request.awaitBodyOrNull(RateRequest::class)?.let {
+        return request.awaitBodyOrNull(DataSheet::class)?.let {
             ServerResponse.ok().buildAndAwait()
         } ?: ServerResponse.badRequest().buildAndAwait()
     }

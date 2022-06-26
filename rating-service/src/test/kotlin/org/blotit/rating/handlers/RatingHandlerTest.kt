@@ -1,0 +1,31 @@
+package org.blotit.rating.handlers
+
+import io.kotest.core.spec.style.StringSpec
+import io.kotest.matchers.shouldBe
+import io.mockk.coEvery
+import io.mockk.mockk
+import io.mockk.mockkStatic
+import org.blotit.rating.domain.DataSheet
+import org.springframework.http.HttpStatus
+import org.springframework.web.reactive.function.server.ServerRequest
+import org.springframework.web.reactive.function.server.awaitBodyOrNull
+
+class RatingHandlerTest : StringSpec({
+    val handler = RatingHandler()
+    val request: ServerRequest = mockk()
+    val sheet: DataSheet = mockk()
+
+    beforeSpec {
+        mockkStatic("org.springframework.web.reactive.function.server.ServerRequestExtensionsKt")
+    }
+
+    "rate should return status ok when the body is present" {
+        coEvery { request.awaitBodyOrNull(DataSheet::class) } returns sheet
+        handler.rate(request).statusCode() shouldBe HttpStatus.OK
+    }
+
+    "rate should return invalid request for missing sheet" {
+        coEvery { request.awaitBodyOrNull(DataSheet::class) } returns null
+        handler.rate(request).statusCode() shouldBe HttpStatus.BAD_REQUEST
+    }
+})

@@ -1,11 +1,14 @@
 package org.blotit.rating
 
-import org.blotit.rating.domain.*
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.KotlinModule
+import org.blotit.rating.domain.DataSheet
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.web.reactive.server.WebTestClient
 import reactor.core.publisher.Mono
+import spock.lang.Shared
 import spock.lang.Specification
 
 import static org.springframework.http.MediaType.APPLICATION_JSON
@@ -15,46 +18,34 @@ import static org.springframework.http.MediaType.APPLICATION_JSON
 class RatingIntegrationSpec extends Specification {
 
     @Autowired
-    WebTestClient webClient
+    WebTestClient client
+
+    @Shared
+    def parser = new ObjectMapper().registerModule(new KotlinModule())
 
     def "It should rate a valid data sheet"() {
-        when:
-        def response = webClient.post()
+        when: "I submit a rate request with a valid data sheet"
+        def response = client.post()
             .uri("/")
-            .body(Mono.just(req), RateRequest.class)
+            .body(Mono.just(req), DataSheet.class)
             .contentType(APPLICATION_JSON)
             .exchange()
 
-        then:
+        then: "it should return http status ok"
         response.expectStatus().isOk()
 
         where:
-        req << new RateRequest(
-            new DataSheet(Type.MONO,
-                new Location(3, 7, 2, 0, 0, 0, 0, 0),
-                new Determinants(7, 1, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0),
-                new Content(4, 2, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0),
-                3,
-                new Summary(10.0, 0.0, 32, 258, 12)
-            ),
-
-            new DataSheet(Type.COLOR,
-                new Location(0, 16, 2, 2, 0, 0, 0, 0),
-                new Determinants(9, 3, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 2, 1, 2, 1),
-                new Content(10, 0, 2, 2, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1),
-                1,
-                new Summary(3.0, 6.0, 33, 474, 20)
-            ))
+        req << parser.readValue(new File("src/test/resources/vl.json"), DataSheet.class)
     }
 
     def "It should reject a missing data sheet"() {
-        when:
-        def response = webClient.post()
+        when: "I submit a rate request without the data sheet"
+        def response = client.post()
             .uri("/")
             .contentType(APPLICATION_JSON)
             .exchange()
 
-        then:
+        then: "it should return http status 400 bad request"
         response.expectStatus().is4xxClientError()
     }
 }

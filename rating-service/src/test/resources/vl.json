@@ -1,0 +1,71 @@
+{
+  "mono": {
+    "type": "MONO",
+    "location": {
+      "G": 3,
+      "primaryP": 7,
+      "secondaryP": 2
+    },
+    "determinants": {
+      "FPlus": 7,
+      "FMinus": 1,
+      "FZero": 1,
+      "mPrimary": 1,
+      "lPrimary": 1,
+      "cLine": 1
+    },
+    "content": {
+      "A": 4,
+      "pA": 2,
+      "H": 4,
+      "ml": 1,
+      "rl": 1
+    },
+    "popularity": 3,
+    "summary": {
+      "Elab": 10,
+      "tri": 32,
+      "T": 258,
+      "R": 12
+    }
+  },
+  "color": {
+    "type": "COLOR",
+    "location": {
+      "primaryP": 16,
+      "secondaryP": 2,
+      "E": 2
+    },
+    "determinants": {
+      "FPlus": 9,
+      "FMinus": 3,
+      "FZero": 1,
+      "mPrimary": 1,
+      "mSecondary": 1,
+      "lLine": 0.5,
+      "cLine": 2.5,
+      "FC": 1.5,
+      "CF": 2,
+      "C": 1
+    },
+    "content": {
+      "A": 10,
+      "H": 2,
+      "pH": 2,
+      "al": 1,
+      "an": 1,
+      "art": 1,
+      "bt": 1,
+      "obj": 1,
+      "vst": 1
+    },
+    "popularity": 1,
+    "summary": {
+      "Elab": 3,
+      "zSquared": 6,
+      "tri": 33,
+      "T": 474,
+      "R": 20
+    }
+  }
+}

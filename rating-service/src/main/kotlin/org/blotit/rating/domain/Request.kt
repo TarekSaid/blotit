@@ -4,15 +4,15 @@ import kotlin.reflect.full.createType
 import kotlin.reflect.full.declaredMemberProperties
 import kotlin.reflect.full.primaryConstructor
 
-data class RateRequest(val mono: DataSheet, val color: DataSheet) {
-    val total: DataSheet = mono + color
+data class DataSheet(val mono: Inkblot, val color: Inkblot) {
+    val total: Inkblot = mono + color
 }
 
 enum class Type {
     MONO, COLOR, TOTAL
 }
 
-data class DataSheet(
+data class Inkblot(
     val type: Type,
     val location: Location,
     val determinants: Determinants,
@@ -20,8 +20,8 @@ data class DataSheet(
     val popularity: Int,
     val summary: Summary
 ) {
-    operator fun plus(other: DataSheet): DataSheet {
-        return copy(
+    operator fun plus(other: Inkblot): Inkblot {
+        return Inkblot(
             type = Type.TOTAL,
             location = this.location + other.location,
             determinants = this.determinants + other.determinants,
@@ -32,9 +32,9 @@ data class DataSheet(
     }
 }
 
-interface Summable
+interface Category
 
-inline operator fun <reified T : Summable> Summable.plus(other: T): T {
+inline operator fun <reified T : Category> Category.plus(other: T): T {
     val constructor = T::class.primaryConstructor ?: throw NullPointerException()
     val members = T::class.declaredMemberProperties
 
@@ -59,38 +59,26 @@ data class Location(
     val pLine: Int = 0,
     val PG: Int = 0,
     val GP: Int = 0
-) {
-    operator fun plus(other: Location): Location {
-        val constructor = Location::class.primaryConstructor ?: throw NullPointerException()
-        val members = Location::class.declaredMemberProperties
-
-        val sums = constructor.parameters.map { param ->
-            val prop = members.first { member -> member.name == param.name }
-            prop.get(this) as Int + prop.get(other) as Int
-        }
-
-        return constructor.call(*sums.toTypedArray())
-    }
-}
+) : Category
 
 data class Determinants(
-    val FPlus: Int = 0,
-    val FMinus: Int = 0,
-    val FZero: Int = 0,
-    val mPrimary: Int = 0,
-    val mSecondary: Int = 0,
-    val mLine: Int = 0,
-    val psPrimary: Int = 0,
-    val psSecondary: Int = 0,
-    val psLine: Int = 0,
-    val lPrimary: Int = 0,
-    val lSecondary: Int = 0,
-    val lLine: Int = 0,
-    val cLine: Int = 0,
-    val FC: Int = 0,
-    val CF: Int = 0,
-    val C: Int = 0
-) : Summable
+    val FPlus: Double = 0.0,
+    val FMinus: Double = 0.0,
+    val FZero: Double = 0.0,
+    val mPrimary: Double = 0.0,
+    val mSecondary: Double = 0.0,
+    val mLine: Double = 0.0,
+    val psPrimary: Double = 0.0,
+    val psSecondary: Double = 0.0,
+    val psLine: Double = 0.0,
+    val lPrimary: Double = 0.0,
+    val lSecondary: Double = 0.0,
+    val lLine: Double = 0.0,
+    val cLine: Double = 0.0,
+    val FC: Double = 0.0,
+    val CF: Double = 0.0,
+    val C: Double = 0.0
+) : Category
 
 data class Content(
     val A: Int = 0,
@@ -117,7 +105,7 @@ data class Content(
     val sg: Int = 0,
     val sx: Int = 0,
     val vst: Int = 0
-) : Summable
+) : Category
 
 data class Summary(
     val Elab: Double = 0.0,
@@ -125,4 +113,4 @@ data class Summary(
     val tri: Int = 0,
     val T: Int = 0,
     val R: Int = 0
-) : Summable
+) : Category
