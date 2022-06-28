@@ -1,6 +1,8 @@
 package org.blotit.rating.handlers
 
 import org.blotit.rating.domain.DataSheet
+import org.blotit.rating.domain.Response
+import org.blotit.rating.services.RatingService
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.stereotype.Component
@@ -16,10 +18,10 @@ class RouterConfiguration {
 }
 
 @Component
-class RatingHandler {
+class RatingHandler(val service: RatingService) {
     suspend fun rate(request: ServerRequest): ServerResponse {
         return request.awaitBodyOrNull(DataSheet::class)?.let {
-            ServerResponse.ok().buildAndAwait()
+            ServerResponse.ok().bodyValueAndAwait(Response(mono = service.rate(it.mono), color = service.rate(it.color), total = service.rate(it.total)))
         } ?: ServerResponse.badRequest().buildAndAwait()
     }
 }

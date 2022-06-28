@@ -7,7 +7,6 @@ plugins {
     kotlin("jvm") version "1.6.21"
     kotlin("plugin.spring") version "1.6.21"
     id("io.kotest") version "0.3.9"
-    groovy
 }
 
 group = "org.blotit"
@@ -39,11 +38,6 @@ dependencies {
     testImplementation("io.kotest:kotest-framework-datatest-jvm:5.3.1")
     testImplementation("io.kotest.extensions:kotest-extensions-spring:1.1.1")
     testImplementation("io.mockk:mockk:1.12.4")
-
-    testImplementation("org.codehaus.groovy:groovy-all:3.0.11")
-    testImplementation(platform("org.spockframework:spock-bom:2.1-groovy-3.0"))
-    testImplementation("org.spockframework:spock-core")
-    testImplementation("org.spockframework:spock-spring")
 }
 
 tasks.withType<KotlinCompile> {

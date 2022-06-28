@@ -1,6 +1,5 @@
 {
   "mono": {
-    "type": "MONO",
     "location": {
       "G": 3,
       "primaryP": 7,
@@ -30,7 +29,6 @@
     }
   },
   "color": {
-    "type": "COLOR",
     "location": {
       "primaryP": 16,
       "secondaryP": 2,

@@ -8,12 +8,7 @@ data class DataSheet(val mono: Inkblot, val color: Inkblot) {
     val total: Inkblot = mono + color
 }
 
-enum class Type {
-    MONO, COLOR, TOTAL
-}
-
 data class Inkblot(
-    val type: Type,
     val location: Location,
     val determinants: Determinants,
     val content: Content,
@@ -22,7 +17,6 @@ data class Inkblot(
 ) {
     operator fun plus(other: Inkblot): Inkblot {
         return Inkblot(
-            type = Type.TOTAL,
             location = this.location + other.location,
             determinants = this.determinants + other.determinants,
             content = this.content + other.content,
