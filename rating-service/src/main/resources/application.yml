@@ -1,6 +1,17 @@
-server:
-  port: 8181
-
 spring:
   application:
     name: rating-service
+
+  config:
+    import: optional:configserver:http://localhost:8888/
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: test
+
+eureka:
+  client:
+    enabled: false

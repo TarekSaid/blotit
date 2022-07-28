@@ -1,3 +1,3 @@
 rootProject.name = "blotit"
 
-include("rating-service")
+include("discovery-service", "config-service", "rating-service")

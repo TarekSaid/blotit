@@ -1,5 +1,6 @@
 package org.blotit.rating.domain
 
+import java.math.BigDecimal
 import kotlin.reflect.full.createType
 import kotlin.reflect.full.declaredMemberProperties
 import kotlin.reflect.full.primaryConstructor
@@ -37,7 +38,7 @@ inline operator fun <reified T : Category> Category.plus(other: T): T {
 
         when (prop.returnType) {
             Int::class.createType() -> prop.get(this as T) as Int + prop.get(other) as Int
-            else -> prop.get(this as T) as Double + prop.get(other) as Double
+            else -> prop.get(this as T) as BigDecimal + prop.get(other) as BigDecimal
         }
     }
 
@@ -56,22 +57,22 @@ data class Location(
 ) : Category
 
 data class Determinants(
-    val FPlus: Double = 0.0,
-    val FMinus: Double = 0.0,
-    val FZero: Double = 0.0,
-    val mPrimary: Double = 0.0,
-    val mSecondary: Double = 0.0,
-    val mLine: Double = 0.0,
-    val psPrimary: Double = 0.0,
-    val psSecondary: Double = 0.0,
-    val psLine: Double = 0.0,
-    val lPrimary: Double = 0.0,
-    val lSecondary: Double = 0.0,
-    val lLine: Double = 0.0,
-    val cLine: Double = 0.0,
-    val FC: Double = 0.0,
-    val CF: Double = 0.0,
-    val C: Double = 0.0
+    val FPlus: BigDecimal = BigDecimal.ZERO,
+    val FMinus: BigDecimal = BigDecimal.ZERO,
+    val FZero: BigDecimal = BigDecimal.ZERO,
+    val mPrimary: BigDecimal = BigDecimal.ZERO,
+    val mSecondary: BigDecimal = BigDecimal.ZERO,
+    val mLine: BigDecimal = BigDecimal.ZERO,
+    val psPrimary: BigDecimal = BigDecimal.ZERO,
+    val psSecondary: BigDecimal = BigDecimal.ZERO,
+    val psLine: BigDecimal = BigDecimal.ZERO,
+    val lPrimary: BigDecimal = BigDecimal.ZERO,
+    val lSecondary: BigDecimal = BigDecimal.ZERO,
+    val lLine: BigDecimal = BigDecimal.ZERO,
+    val cLine: BigDecimal = BigDecimal.ZERO,
+    val FC: BigDecimal = BigDecimal.ZERO,
+    val CF: BigDecimal = BigDecimal.ZERO,
+    val C: BigDecimal = BigDecimal.ZERO
 ) : Category
 
 data class Content(
@@ -102,8 +103,8 @@ data class Content(
 ) : Category
 
 data class Summary(
-    val Elab: Double = 0.0,
-    val zSquared: Double = 0.0,
+    val Elab: BigDecimal = BigDecimal.ZERO,
+    val zSquared: BigDecimal = BigDecimal.ZERO,
     val tri: Int = 0,
     val T: Int = 0,
     val R: Int = 0
